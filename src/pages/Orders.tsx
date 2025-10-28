@@ -3,10 +3,13 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
-import { Package, Clock, Truck, CheckCircle, XCircle } from 'lucide-react';
+import { Package, Clock, Truck, CheckCircle, XCircle, Star } from 'lucide-react';
+import { ReviewDialog } from '@/components/ReviewDialog';
+import { DeliveryTracking } from '@/components/DeliveryTracking';
 
 interface Order {
   id: string;
@@ -16,6 +19,8 @@ interface Order {
   phone: string;
   notes: string | null;
   created_at: string;
+  payment_status: string;
+  delivery_partner_id: string | null;
   order_items: Array<{
     item_name: string;
     quantity: number;
@@ -35,6 +40,7 @@ const statusConfig = {
 const Orders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reviewOrderId, setReviewOrderId] = useState<string | null>(null);
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -118,7 +124,7 @@ const Orders = () => {
                       </Badge>
                     </div>
                   </CardHeader>
-                  <CardContent className="pt-6">
+                  <CardContent className="pt-6 space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h3 className="font-semibold mb-3">Items</h3>
@@ -130,9 +136,17 @@ const Orders = () => {
                             </div>
                           ))}
                         </div>
-                        <div className="mt-4 pt-4 border-t flex justify-between font-bold">
-                          <span>Total</span>
-                          <span className="text-primary">${order.total.toFixed(2)}</span>
+                        <div className="mt-4 pt-4 border-t space-y-2">
+                          <div className="flex justify-between font-bold">
+                            <span>Total</span>
+                            <span className="text-primary">${order.total.toFixed(2)}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Payment</span>
+                            <Badge variant={order.payment_status === 'paid' ? 'default' : 'secondary'}>
+                              {order.payment_status}
+                            </Badge>
+                          </div>
                         </div>
                       </div>
                       <div>
@@ -155,6 +169,24 @@ const Orders = () => {
                         </div>
                       </div>
                     </div>
+
+                    {order.delivery_partner_id && (
+                      <DeliveryTracking
+                        orderId={order.id}
+                        deliveryPartnerId={order.delivery_partner_id}
+                      />
+                    )}
+
+                    {order.status === 'delivered' && (
+                      <Button
+                        onClick={() => setReviewOrderId(order.id)}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Star className="mr-2 h-4 w-4" />
+                        Leave a Review
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               );
@@ -162,6 +194,13 @@ const Orders = () => {
           </div>
         )}
       </main>
+
+      <ReviewDialog
+        open={!!reviewOrderId}
+        onOpenChange={(open) => !open && setReviewOrderId(null)}
+        orderId={reviewOrderId || ''}
+        onReviewSubmitted={() => setReviewOrderId(null)}
+      />
     </div>
   );
 };

@@ -45,6 +45,7 @@ const Cart = () => {
     setLoading(true);
 
     try {
+      // Create order first
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert({
@@ -53,12 +54,14 @@ const Cart = () => {
           delivery_address: deliveryAddress,
           phone,
           notes: notes || null,
+          payment_status: 'pending',
         })
         .select()
         .single();
 
       if (orderError) throw orderError;
 
+      // Create order items
       const orderItems = items.map(item => ({
         order_id: order.id,
         menu_item_id: item.id,
@@ -73,19 +76,28 @@ const Cart = () => {
 
       if (itemsError) throw itemsError;
 
+      // Create Stripe payment session
+      const { data: paymentData, error: paymentError } = await supabase.functions.invoke(
+        'create-payment',
+        {
+          body: {
+            orderId: order.id,
+            amount: total,
+          },
+        }
+      );
+
+      if (paymentError) throw paymentError;
+
+      // Clear cart and redirect to Stripe Checkout
       clearCart();
-      toast({
-        title: "Order placed successfully!",
-        description: "We'll start preparing your order right away.",
-      });
-      navigate('/orders');
+      window.location.href = paymentData.url;
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Error placing order",
+        title: "Error processing order",
         description: error.message,
       });
-    } finally {
       setLoading(false);
     }
   };

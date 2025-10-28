@@ -12,15 +12,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
-import { Plus, Edit, Trash } from 'lucide-react';
+import { Plus, Edit, Trash, UserPlus, Truck } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
   const { toast } = useToast();
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
+  const [deliveryPartners, setDeliveryPartners] = useState<any[]>([]);
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
+  const [showPartnerForm, setShowPartnerForm] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -31,10 +34,19 @@ const Admin = () => {
     available: true,
   });
 
+  const [partnerForm, setPartnerForm] = useState({
+    email: '',
+    password: '',
+    name: '',
+    phone: '',
+    vehicle_type: 'bike',
+  });
+
   useEffect(() => {
     if (isAdmin) {
       fetchMenuItems();
       fetchOrders();
+      fetchDeliveryPartners();
     }
   }, [isAdmin]);
 
@@ -56,6 +68,14 @@ const Admin = () => {
       `)
       .order('created_at', { ascending: false });
     setOrders(data || []);
+  };
+
+  const fetchDeliveryPartners = async () => {
+    const { data } = await supabase
+      .from('delivery_partners')
+      .select('*')
+      .order('created_at', { ascending: false });
+    setDeliveryPartners(data || []);
   };
 
   const handleSaveItem = async () => {
@@ -125,6 +145,62 @@ const Admin = () => {
     }
   };
 
+  const handleAssignDeliveryPartner = async (orderId: string, partnerId: string) => {
+    const { error } = await supabase
+      .from('orders')
+      .update({ delivery_partner_id: partnerId })
+      .eq('id', orderId);
+
+    if (error) {
+      toast({ variant: "destructive", title: "Error assigning", description: error.message });
+    } else {
+      toast({ title: "Delivery partner assigned" });
+      fetchOrders();
+    }
+  };
+
+  const handleAddDeliveryPartner = async () => {
+    if (!partnerForm.email || !partnerForm.password || !partnerForm.name || !partnerForm.phone) {
+      toast({ variant: "destructive", title: "Missing info", description: "Fill all fields" });
+      return;
+    }
+
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: partnerForm.email,
+        password: partnerForm.password,
+        options: { data: { full_name: partnerForm.name } },
+      });
+
+      if (authError) throw authError;
+      if (!authData.user) throw new Error("User creation failed");
+
+      const { error: partnerError } = await supabase
+        .from('delivery_partners')
+        .insert({
+          user_id: authData.user.id,
+          name: partnerForm.name,
+          phone: partnerForm.phone,
+          vehicle_type: partnerForm.vehicle_type,
+        });
+
+      if (partnerError) throw partnerError;
+
+      const { error: roleError } = await supabase
+        .from('user_roles')
+        .insert({ user_id: authData.user.id, role: 'delivery_partner' });
+
+      if (roleError) throw roleError;
+
+      setShowPartnerForm(false);
+      setPartnerForm({ email: '', password: '', name: '', phone: '', vehicle_type: 'bike' });
+      fetchDeliveryPartners();
+      toast({ title: "Partner added" });
+    } catch (error: any) {
+      toast({ variant: "destructive", title: "Error", description: error.message });
+    }
+  };
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
@@ -144,6 +220,7 @@ const Admin = () => {
           <TabsList>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="menu">Menu Items</TabsTrigger>
+            <TabsTrigger value="delivery">Delivery Partners</TabsTrigger>
           </TabsList>
 
           <TabsContent value="orders" className="space-y-4">
@@ -163,10 +240,10 @@ const Admin = () => {
                             <p className="text-sm text-muted-foreground">{order.profiles?.full_name}</p>
                             <p className="text-sm">{new Date(order.created_at).toLocaleString()}</p>
                           </div>
-                          <div className="text-right">
+                          <div className="text-right space-y-2">
                             <p className="font-bold text-lg">${order.total.toFixed(2)}</p>
                             <Select value={order.status} onValueChange={(value) => handleUpdateOrderStatus(order.id, value)}>
-                              <SelectTrigger className="w-40 mt-2">
+                              <SelectTrigger className="w-40">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
@@ -176,6 +253,21 @@ const Admin = () => {
                                 <SelectItem value="out_for_delivery">Out for Delivery</SelectItem>
                                 <SelectItem value="delivered">Delivered</SelectItem>
                                 <SelectItem value="cancelled">Cancelled</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <Select
+                              value={order.delivery_partner_id || ""}
+                              onValueChange={(value) => handleAssignDeliveryPartner(order.id, value)}
+                            >
+                              <SelectTrigger className="w-40">
+                                <SelectValue placeholder="Assign partner" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {deliveryPartners.filter(p => p.is_available).map(partner => (
+                                  <SelectItem key={partner.user_id} value={partner.user_id}>
+                                    {partner.name}
+                                  </SelectItem>
+                                ))}
                               </SelectContent>
                             </Select>
                           </div>
@@ -334,7 +426,91 @@ const Admin = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="delivery" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle>Delivery Partners</CardTitle>
+                    <CardDescription>Manage your delivery team</CardDescription>
+                  </div>
+                  <Button onClick={() => setShowPartnerForm(true)}>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Add Partner
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4">
+                  {deliveryPartners.map(partner => (
+                    <Card key={partner.id}>
+                      <CardContent className="pt-6">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-bold">{partner.name}</h3>
+                            <p className="text-sm text-muted-foreground">{partner.phone}</p>
+                            <div className="flex items-center gap-2 mt-2">
+                              <Truck className="h-4 w-4" />
+                              <span className="text-sm capitalize">{partner.vehicle_type}</span>
+                            </div>
+                          </div>
+                          <Badge variant={partner.is_available ? "default" : "secondary"}>
+                            {partner.is_available ? "Available" : "Offline"}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
+
+        <Dialog open={showPartnerForm} onOpenChange={setShowPartnerForm}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Delivery Partner</DialogTitle>
+              <DialogDescription>Create new delivery partner account</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Name</Label>
+                <Input value={partnerForm.name} onChange={(e) => setPartnerForm({ ...partnerForm, name: e.target.value })} />
+              </div>
+              <div>
+                <Label>Email</Label>
+                <Input type="email" value={partnerForm.email} onChange={(e) => setPartnerForm({ ...partnerForm, email: e.target.value })} />
+              </div>
+              <div>
+                <Label>Password</Label>
+                <Input type="password" value={partnerForm.password} onChange={(e) => setPartnerForm({ ...partnerForm, password: e.target.value })} />
+              </div>
+              <div>
+                <Label>Phone</Label>
+                <Input type="tel" value={partnerForm.phone} onChange={(e) => setPartnerForm({ ...partnerForm, phone: e.target.value })} />
+              </div>
+              <div>
+                <Label>Vehicle Type</Label>
+                <Select value={partnerForm.vehicle_type} onValueChange={(value) => setPartnerForm({ ...partnerForm, vehicle_type: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="bike">Bike</SelectItem>
+                    <SelectItem value="scooter">Scooter</SelectItem>
+                    <SelectItem value="car">Car</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setShowPartnerForm(false)}>Cancel</Button>
+              <Button onClick={handleAddDeliveryPartner}>Add Partner</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );
