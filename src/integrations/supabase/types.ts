@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      delivery_partners: {
+        Row: {
+          created_at: string | null
+          current_lat: number | null
+          current_lng: number | null
+          id: string
+          is_available: boolean | null
+          name: string
+          phone: string
+          updated_at: string | null
+          user_id: string
+          vehicle_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_lat?: number | null
+          current_lng?: number | null
+          id?: string
+          is_available?: boolean | null
+          name: string
+          phone: string
+          updated_at?: string | null
+          user_id: string
+          vehicle_type: string
+        }
+        Update: {
+          created_at?: string | null
+          current_lat?: number | null
+          current_lng?: number | null
+          id?: string
+          is_available?: boolean | null
+          name?: string
+          phone?: string
+          updated_at?: string | null
+          user_id?: string
+          vehicle_type?: string
+        }
+        Relationships: []
+      }
       menu_items: {
         Row: {
           available: boolean | null
@@ -99,8 +138,14 @@ export type Database = {
         Row: {
           created_at: string | null
           delivery_address: string
+          delivery_lat: number | null
+          delivery_lng: number | null
+          delivery_partner_id: string | null
+          estimated_delivery_time: string | null
           id: string
           notes: string | null
+          payment_intent_id: string | null
+          payment_status: string | null
           phone: string
           status: Database["public"]["Enums"]["order_status"] | null
           total: number
@@ -110,8 +155,14 @@ export type Database = {
         Insert: {
           created_at?: string | null
           delivery_address: string
+          delivery_lat?: number | null
+          delivery_lng?: number | null
+          delivery_partner_id?: string | null
+          estimated_delivery_time?: string | null
           id?: string
           notes?: string | null
+          payment_intent_id?: string | null
+          payment_status?: string | null
           phone: string
           status?: Database["public"]["Enums"]["order_status"] | null
           total: number
@@ -121,8 +172,14 @@ export type Database = {
         Update: {
           created_at?: string | null
           delivery_address?: string
+          delivery_lat?: number | null
+          delivery_lng?: number | null
+          delivery_partner_id?: string | null
+          estimated_delivery_time?: string | null
           id?: string
           notes?: string | null
+          payment_intent_id?: string | null
+          payment_status?: string | null
           phone?: string
           status?: Database["public"]["Enums"]["order_status"] | null
           total?: number
@@ -165,6 +222,44 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          id: string
+          order_id: string
+          rating: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          order_id: string
+          rating: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          id?: string
+          order_id?: string
+          rating?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -209,7 +304,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "delivery_partner"
       menu_category:
         | "appetizers"
         | "main_course"
@@ -350,7 +445,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "delivery_partner"],
       menu_category: [
         "appetizers",
         "main_course",
