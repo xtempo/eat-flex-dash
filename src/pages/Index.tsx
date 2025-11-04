@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import MenuPreview from "@/components/MenuPreview";
+import Cookies from "@/components/Cookies";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -42,6 +43,7 @@ const Index = () => {
       </section>
       
       <MenuPreview />
+      <Cookies />
       <About />
       <Contact />
       <Footer />
