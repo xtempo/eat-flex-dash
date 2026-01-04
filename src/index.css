@@ -209,23 +209,84 @@
   }
 
   /* Decorative corner pattern */
+  .corner-pattern {
+    position: relative;
+  }
+
   .corner-pattern::before,
   .corner-pattern::after {
     content: '࿐';
     position: absolute;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     color: hsl(var(--tibetan-gold));
-    opacity: 0.6;
+    opacity: 0.8;
+    z-index: 10;
   }
 
   .corner-pattern::before {
-    top: 0.5rem;
+    top: 0.25rem;
     left: 0.5rem;
   }
 
   .corner-pattern::after {
-    bottom: 0.5rem;
+    bottom: 0.25rem;
     right: 0.5rem;
     transform: rotate(180deg);
+  }
+
+  /* Full four-corner Tibetan ornament for cards */
+  .tibetan-card-ornaments {
+    position: relative;
+    overflow: visible;
+  }
+
+  .tibetan-card-ornaments::before {
+    content: '࿐  ࿑';
+    position: absolute;
+    top: -0.25rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: hsl(var(--tibetan-gold));
+    pointer-events: none;
+    padding: 0 0.5rem;
+    z-index: 10;
+  }
+
+  .tibetan-card-ornaments::after {
+    content: '࿑  ࿐';
+    position: absolute;
+    bottom: -0.25rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: hsl(var(--tibetan-gold));
+    pointer-events: none;
+    padding: 0 0.5rem;
+    z-index: 10;
+  }
+
+  /* Tibetan card with ornate border */
+  .tibetan-card {
+    position: relative;
+    border: 1px solid hsl(var(--tibetan-gold) / 0.4);
+    background: hsl(var(--card));
+  }
+
+  .tibetan-card::before {
+    content: '☸';
+    position: absolute;
+    top: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.875rem;
+    color: hsl(var(--tibetan-maroon));
+    background: hsl(var(--card));
+    padding: 0 0.5rem;
+    z-index: 10;
   }
 }

@@ -37,30 +37,29 @@ const About = () => {
                 <Heart className="w-5 h-5 fill-current" />
                 <span className="text-sm font-medium uppercase tracking-wider">Our Story</span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-restaurant-dark leading-tight">
-                Where Tradition Meets Innovation
+              <h2 className="text-3xl md:text-4xl font-bold text-tibetan-dark leading-tight">
+                Ancient Wisdom, Modern Warmth
               </h2>
               <p className="text-lg text-muted-foreground">
-                Founded in 1985, Bella Vista has been serving authentic Mediterranean cuisine 
-                with a modern twist. Our passion for food excellence and warm hospitality 
-                has made us a beloved destination for food enthusiasts.
+                Nestled in the heart of the city, Himalayan Kitchen brings the authentic flavors 
+                of Tibet and Ladakh to your table. Our recipes have been passed down through 
+                generations of Himalayan families.
               </p>
               <p className="text-muted-foreground">
-                Every dish we serve represents our commitment to quality, authenticity, and 
-                the joy of sharing great food with great people. We believe dining is not 
-                just about eating—it's about creating memories.
+                Every dish we serve represents our commitment to preserving traditional cooking 
+                methods while creating a warm, welcoming atmosphere that honors our heritage.
               </p>
             </div>
 
             {/* Achievement Badges */}
             <div className="flex flex-wrap gap-3">
-              <Badge className="bg-restaurant-gold text-restaurant-dark px-3 py-1">
-                Michelin Recommended
+              <Badge className="bg-tibetan-gold text-tibetan-dark px-3 py-1">
+                Authentic Recipes
               </Badge>
               <Badge className="bg-primary text-primary-foreground px-3 py-1">
-                Best Local Restaurant 2023
+                Family Heritage
               </Badge>
-              <Badge className="bg-restaurant-red text-white px-3 py-1">
+              <Badge className="bg-tibetan-ochre text-white px-3 py-1">
                 5-Star Rated
               </Badge>
             </div>
@@ -71,6 +70,7 @@ const About = () => {
             {features.map((feature, index) => (
               <Card 
                 key={feature.title}
+                ornate
                 className="border-none shadow-elegant hover:shadow-warm transition-all duration-300"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
@@ -78,7 +78,7 @@ const About = () => {
                   <div className="flex items-center justify-center w-16 h-16 bg-gradient-warm rounded-full mx-auto">
                     <feature.icon className="w-8 h-8 text-primary-foreground" />
                   </div>
-                  <h3 className="text-xl font-semibold text-restaurant-dark">
+                  <h3 className="text-xl font-semibold text-tibetan-dark">
                     {feature.title}
                   </h3>
                   <p className="text-muted-foreground text-sm">
@@ -92,12 +92,12 @@ const About = () => {
 
         {/* Quote Section */}
         <div className="mt-20 text-center max-w-4xl mx-auto animate-fade-in">
-          <blockquote className="text-2xl md:text-3xl font-light text-restaurant-dark italic leading-relaxed">
-            "Food is our common ground, a universal experience that brings people together."
+          <blockquote className="text-2xl md:text-3xl font-light text-tibetan-dark italic leading-relaxed">
+            "Food is a sacred offering — it nourishes the body, warms the soul, and connects us to our ancestors."
           </blockquote>
           <div className="mt-6">
-            <p className="font-semibold text-primary">Chef Marco Antonelli</p>
-            <p className="text-sm text-muted-foreground">Head Chef & Owner</p>
+            <p className="font-semibold text-primary">Traditional Himalayan Proverb</p>
+            <p className="text-sm text-muted-foreground">བཀྲ་ཤིས་བདེ་ལེགས</p>
           </div>
         </div>
       </div>
