@@ -73,7 +73,8 @@ const MenuPreview = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {featuredDishes.map((dish, index) => (
             <Card 
-              key={dish.id} 
+              key={dish.id}
+              ornate
               className="overflow-hidden hover:shadow-warm transition-all duration-300 animate-slide-up group border-tibetan-gold/20"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
