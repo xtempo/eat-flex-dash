@@ -47,11 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        restaurant: {
-          red: "hsl(var(--restaurant-red))",
-          gold: "hsl(var(--restaurant-gold))",
-          cream: "hsl(var(--restaurant-cream))",
-          dark: "hsl(var(--restaurant-dark))",
+        tibetan: {
+          maroon: "hsl(var(--tibetan-maroon))",
+          gold: "hsl(var(--tibetan-gold))",
+          cream: "hsl(var(--tibetan-cream))",
+          dark: "hsl(var(--tibetan-dark))",
+          turquoise: "hsl(var(--tibetan-turquoise))",
+          ochre: "hsl(var(--tibetan-ochre))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

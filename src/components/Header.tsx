@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
-import { ShoppingCart, User, LogOut, LayoutDashboard, Package } from "lucide-react";
+import { ShoppingCart, User, LogOut, LayoutDashboard, Package, Mountain } from "lucide-react";
 import { Badge } from "./ui/badge";
 
 const Header = () => {
@@ -10,10 +10,16 @@ const Header = () => {
   const { itemCount } = useCart();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-tibetan-gold/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold text-primary">Bella Vista</span>
+        <Link to="/" className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-warm rounded-full flex items-center justify-center">
+            <Mountain className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold text-primary tracking-wide">Himalayan Kitchen</span>
+            <span className="text-xs text-muted-foreground tracking-widest uppercase">Tibetan & Ladakhi</span>
+          </div>
         </Link>
         <nav className="flex items-center gap-4">
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
@@ -40,7 +46,7 @@ const Header = () => {
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   Cart
                   {itemCount > 0 && (
-                    <Badge className="ml-1 px-1.5 py-0.5 text-xs">{itemCount}</Badge>
+                    <Badge className="ml-1 px-1.5 py-0.5 text-xs bg-tibetan-gold text-tibetan-dark">{itemCount}</Badge>
                   )}
                 </Button>
               </Link>
@@ -51,7 +57,7 @@ const Header = () => {
             </>
           ) : (
             <Link to="/auth">
-              <Button size="sm">
+              <Button size="sm" className="bg-gradient-warm hover:opacity-90">
                 <User className="h-4 w-4 mr-2" />
                 Sign In
               </Button>
