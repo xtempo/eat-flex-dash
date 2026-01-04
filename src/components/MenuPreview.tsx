@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Plus, Flame, Leaf, Mountain } from "lucide-react";
-import menuImage from "@/assets/menu-showcase.jpg";
+import momosImage from "@/assets/momos-dish.jpg";
+import thukpaImage from "@/assets/thukpa-soup.jpg";
+import tingmoImage from "@/assets/tingmo-shapta.jpg";
 
 const MenuPreview = () => {
   const featuredDishes = [
@@ -12,7 +14,7 @@ const MenuPreview = () => {
       description: "Hand-crafted Tibetan dumplings with seasoned vegetables and special dipping sauce",
       price: 12,
       rating: 4.9,
-      image: menuImage,
+      image: momosImage,
       badges: ["House Special", "Vegetarian"],
       spicy: false,
       popular: true
@@ -23,7 +25,7 @@ const MenuPreview = () => {
       description: "Hearty Himalayan noodle soup with tender vegetables and aromatic herbs",
       price: 14,
       rating: 4.8,
-      image: menuImage,
+      image: thukpaImage,
       badges: ["Comfort Food"],
       spicy: false,
       popular: true
@@ -34,7 +36,7 @@ const MenuPreview = () => {
       description: "Fluffy steamed bread with spicy stir-fried beef in traditional Tibetan spices",
       price: 18,
       rating: 4.7,
-      image: menuImage,
+      image: tingmoImage,
       badges: ["Spicy", "Traditional"],
       spicy: true,
       popular: false
