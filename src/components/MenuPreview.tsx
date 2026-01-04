@@ -77,28 +77,32 @@ const MenuPreview = () => {
               className="overflow-hidden hover:shadow-warm transition-all duration-300 animate-slide-up group border-tibetan-gold/20"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="relative overflow-hidden">
-                <img
-                  src={dish.image}
-                  alt={dish.name}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                  {dish.popular && (
-                    <Badge className="bg-primary text-primary-foreground">
-                      <Star className="w-3 h-3 mr-1 fill-current" />
-                      Popular
-                    </Badge>
-                  )}
-                  {dish.spicy && (
-                    <Badge className="bg-tibetan-ochre text-white">
-                      <Flame className="w-3 h-3 mr-1" />
-                      Spicy
-                    </Badge>
-                  )}
-                </div>
-                <div className="absolute top-4 right-4 bg-tibetan-cream/95 px-3 py-1 rounded-full text-sm font-semibold text-tibetan-dark">
-                  ${dish.price}
+              <div className="p-3 pb-0">
+                <div className="tibetan-image-frame">
+                  <div className="relative overflow-hidden rounded">
+                    <img
+                      src={dish.image}
+                      alt={dish.name}
+                      className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+                      {dish.popular && (
+                        <Badge className="bg-primary text-primary-foreground">
+                          <Star className="w-3 h-3 mr-1 fill-current" />
+                          Popular
+                        </Badge>
+                      )}
+                      {dish.spicy && (
+                        <Badge className="bg-tibetan-ochre text-white">
+                          <Flame className="w-3 h-3 mr-1" />
+                          Spicy
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="absolute top-3 right-3 bg-tibetan-cream/95 px-3 py-1 rounded-full text-sm font-semibold text-tibetan-dark">
+                      ${dish.price}
+                    </div>
+                  </div>
                 </div>
               </div>
               

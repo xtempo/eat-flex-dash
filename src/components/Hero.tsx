@@ -78,13 +78,15 @@ const Hero = () => {
 
           {/* Image */}
           <div className="relative animate-slide-up">
-            <div className="relative overflow-hidden rounded-lg shadow-elegant tibetan-border">
-              <img
-                src={heroImage}
-                alt="Authentic Tibetan cuisine"
-                className="w-full h-[600px] object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-tibetan-dark/40 to-transparent" />
+            <div className="tibetan-image-frame shadow-elegant">
+              <div className="relative overflow-hidden rounded">
+                <img
+                  src={heroImage}
+                  alt="Authentic Tibetan cuisine"
+                  className="w-full h-[600px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-tibetan-dark/40 to-transparent" />
+              </div>
             </div>
             
             {/* Floating decorative elements */}
