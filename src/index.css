@@ -2,123 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Restaurant Design System - Warm, appetizing colors for food business */
+/* Tibetan/Ladakhi Design System - Himalayan mountain warmth and spirituality */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
+    /* Warm parchment background */
+    --background: 35 30% 97%;
+    --foreground: 15 25% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
+    /* Card with subtle warmth */
+    --card: 35 25% 95%;
+    --card-foreground: 15 25% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
+    --popover: 35 25% 95%;
+    --popover-foreground: 15 25% 15%;
 
-    /* Warm orange primary for restaurant branding */
-    --primary: 24 70% 52%;
-    --primary-foreground: 0 0% 98%;
+    /* Deep Tibetan Maroon/Burgundy primary */
+    --primary: 350 65% 35%;
+    --primary-foreground: 35 30% 97%;
 
-    /* Soft cream secondary */
-    --secondary: 35 20% 96%;
-    --secondary-foreground: 20 14.3% 4.1%;
+    /* Warm cream secondary */
+    --secondary: 35 35% 90%;
+    --secondary-foreground: 15 25% 15%;
 
-    --muted: 35 20% 96%;
-    --muted-foreground: 20 5.9% 45%;
+    --muted: 35 20% 92%;
+    --muted-foreground: 15 15% 40%;
 
-    /* Warm accent color */
-    --accent: 43 74% 66%;
-    --accent-foreground: 20 14.3% 4.1%;
+    /* Saffron/Gold accent - prayer wheel gold */
+    --accent: 38 85% 55%;
+    --accent-foreground: 15 25% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 35 30% 97%;
 
-    --border: 35 20% 90%;
-    --input: 35 20% 90%;
-    --ring: 24 70% 52%;
+    --border: 35 25% 85%;
+    --input: 35 25% 88%;
+    --ring: 350 65% 35%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    /* Custom restaurant colors */
-    --restaurant-red: 0 65% 51%;
-    --restaurant-gold: 43 74% 66%;
-    --restaurant-cream: 35 20% 96%;
-    --restaurant-dark: 20 14.3% 4.1%;
+    /* Tibetan/Ladakhi custom colors */
+    --tibetan-maroon: 350 65% 35%;
+    --tibetan-gold: 38 85% 55%;
+    --tibetan-cream: 35 30% 95%;
+    --tibetan-dark: 15 25% 12%;
+    --tibetan-turquoise: 175 55% 45%;
+    --tibetan-ochre: 30 60% 50%;
 
-    /* Gradients */
-    --gradient-warm: linear-gradient(135deg, hsl(24 70% 52%), hsl(0 65% 51%));
-    --gradient-subtle: linear-gradient(180deg, hsl(35 20% 98%), hsl(35 20% 96%));
+    /* Gradients inspired by monastery walls */
+    --gradient-warm: linear-gradient(135deg, hsl(350 65% 35%), hsl(350 55% 28%));
+    --gradient-gold: linear-gradient(135deg, hsl(38 85% 55%), hsl(30 75% 45%));
+    --gradient-subtle: linear-gradient(180deg, hsl(35 30% 98%), hsl(35 25% 93%));
     
-    /* Shadows */
-    --shadow-warm: 0 10px 30px -10px hsl(24 70% 52% / 0.3);
-    --shadow-elegant: 0 4px 20px -2px hsl(20 14.3% 4.1% / 0.1);
+    /* Himalayan shadows */
+    --shadow-warm: 0 10px 30px -10px hsl(350 65% 35% / 0.25);
+    --shadow-elegant: 0 4px 20px -2px hsl(15 25% 12% / 0.12);
 
-    /* Transitions */
+    /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 35 25% 95%;
+    --sidebar-foreground: 15 25% 25%;
+    --sidebar-primary: 350 65% 35%;
+    --sidebar-primary-foreground: 35 30% 97%;
+    --sidebar-accent: 35 30% 90%;
+    --sidebar-accent-foreground: 15 25% 15%;
+    --sidebar-border: 35 25% 85%;
+    --sidebar-ring: 350 65% 35%;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
+    /* Deep night sky background */
+    --background: 15 25% 8%;
+    --foreground: 35 25% 92%;
 
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 0 0% 95%;
+    --card: 15 20% 12%;
+    --card-foreground: 35 25% 92%;
 
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 15 20% 12%;
+    --popover-foreground: 35 25% 92%;
 
-    --primary: 24 70% 52%;
-    --primary-foreground: 0 0% 98%;
+    /* Lighter maroon for dark mode */
+    --primary: 350 60% 50%;
+    --primary-foreground: 35 30% 97%;
 
-    --secondary: 20 5.9% 10%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 15 15% 18%;
+    --secondary-foreground: 35 25% 92%;
 
-    --muted: 20 5.9% 10%;
-    --muted-foreground: 20 5.9% 64%;
+    --muted: 15 15% 18%;
+    --muted-foreground: 35 15% 60%;
 
-    --accent: 43 74% 66%;
-    --accent-foreground: 20 14.3% 4.1%;
+    /* Brighter gold in dark mode */
+    --accent: 38 80% 60%;
+    --accent-foreground: 15 25% 12%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 35 30% 97%;
 
-    --border: 20 5.9% 15%;
-    --input: 20 5.9% 15%;
-    --ring: 24 70% 52%;
+    --border: 15 15% 22%;
+    --input: 15 15% 22%;
+    --ring: 350 60% 50%;
 
-    /* Dark mode custom colors */
-    --restaurant-red: 0 65% 51%;
-    --restaurant-gold: 43 74% 66%;
-    --restaurant-cream: 20 5.9% 10%;
-    --restaurant-dark: 0 0% 95%;
+    /* Dark mode Tibetan colors */
+    --tibetan-maroon: 350 60% 50%;
+    --tibetan-gold: 38 80% 60%;
+    --tibetan-cream: 15 15% 18%;
+    --tibetan-dark: 35 25% 92%;
+    --tibetan-turquoise: 175 50% 55%;
+    --tibetan-ochre: 30 55% 55%;
 
     /* Dark gradients */
-    --gradient-warm: linear-gradient(135deg, hsl(24 70% 52%), hsl(0 65% 51%));
-    --gradient-subtle: linear-gradient(180deg, hsl(20 5.9% 6%), hsl(20 5.9% 10%));
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --gradient-warm: linear-gradient(135deg, hsl(350 60% 50%), hsl(350 50% 40%));
+    --gradient-gold: linear-gradient(135deg, hsl(38 80% 60%), hsl(30 70% 50%));
+    --gradient-subtle: linear-gradient(180deg, hsl(15 20% 10%), hsl(15 20% 14%));
+
+    --sidebar-background: 15 20% 10%;
+    --sidebar-foreground: 35 25% 90%;
+    --sidebar-primary: 350 60% 50%;
+    --sidebar-primary-foreground: 35 30% 97%;
+    --sidebar-accent: 15 15% 18%;
+    --sidebar-accent-foreground: 35 25% 92%;
+    --sidebar-border: 15 15% 22%;
+    --sidebar-ring: 350 60% 50%;
   }
 }
 
@@ -129,5 +134,59 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Crimson Pro', serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cinzel', serif;
+  }
+}
+
+/* Tibetan decorative patterns */
+@layer components {
+  .tibetan-border {
+    border: 2px solid hsl(var(--tibetan-gold));
+    position: relative;
+  }
+
+  .tibetan-border::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    border: 1px solid hsl(var(--tibetan-maroon));
+    pointer-events: none;
+  }
+
+  .prayer-wheel-spin {
+    animation: prayer-spin 10s linear infinite;
+  }
+
+  @keyframes prayer-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Decorative corner pattern */
+  .corner-pattern::before,
+  .corner-pattern::after {
+    content: '࿐';
+    position: absolute;
+    font-size: 1.5rem;
+    color: hsl(var(--tibetan-gold));
+    opacity: 0.6;
+  }
+
+  .corner-pattern::before {
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+
+  .corner-pattern::after {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    transform: rotate(180deg);
   }
 }
