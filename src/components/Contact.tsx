@@ -56,7 +56,6 @@ const Contact = () => {
               {contactInfo.map((info, index) => (
                 <Card 
                   key={info.title}
-                  ornate
                   className="border-none shadow-elegant hover:shadow-warm transition-all duration-300"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
@@ -80,7 +79,7 @@ const Contact = () => {
             </div>
 
             {/* Map Placeholder */}
-            <Card ornate className="overflow-hidden animate-slide-up">
+            <Card className="overflow-hidden animate-slide-up">
               <div className="h-64 bg-gradient-subtle flex items-center justify-center">
                 <div className="text-center space-y-2">
                   <Mountain className="w-12 h-12 text-primary mx-auto" />
@@ -92,7 +91,7 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <Card ornate className="shadow-elegant animate-slide-up">
+          <Card className="shadow-elegant animate-slide-up">
             <CardHeader>
               <CardTitle className="text-2xl text-tibetan-dark">Send us a Message</CardTitle>
             </CardHeader>
