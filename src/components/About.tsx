@@ -70,7 +70,6 @@ const About = () => {
             {features.map((feature, index) => (
               <Card 
                 key={feature.title}
-                ornate
                 className="border-none shadow-elegant hover:shadow-warm transition-all duration-300"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
