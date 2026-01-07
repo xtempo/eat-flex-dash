@@ -78,8 +78,8 @@ const MenuPreview = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="p-3 pb-0">
-                <div className="tibetan-image-frame">
-                  <div className="relative overflow-hidden rounded">
+                <div className="rounded-lg overflow-hidden">
+                  <div className="relative">
                     <img
                       src={dish.image}
                       alt={dish.name}

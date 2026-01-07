@@ -35,7 +35,7 @@ const Hero = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 py-8 border-y border-tibetan-gold/30">
               <div className="text-center">
-                <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full mx-auto mb-2 tibetan-border">
+                <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full mx-auto mb-2">
                   <span className="text-xl">🥟</span>
                 </div>
                 <div className="text-2xl font-bold text-tibetan-dark">50+</div>
@@ -78,8 +78,8 @@ const Hero = () => {
 
           {/* Image */}
           <div className="relative animate-slide-up">
-            <div className="tibetan-image-frame shadow-elegant">
-              <div className="relative overflow-hidden rounded">
+            <div className="shadow-elegant rounded-lg overflow-hidden">
+              <div className="relative">
                 <img
                   src={heroImage}
                   alt="Authentic Tibetan cuisine"
