@@ -110,15 +110,19 @@ const Menu = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map(item => (
             <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              {item.image_url && (
-                <div className="aspect-video w-full overflow-hidden bg-secondary/20">
+              <div className="aspect-video w-full overflow-hidden bg-secondary/20">
+                {item.image_url ? (
                   <img
                     src={item.image_url}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
-                </div>
-              )}
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-muted">
+                    <span className="text-4xl">🍽️</span>
+                  </div>
+                )}
+              </div>
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle>{item.name}</CardTitle>
