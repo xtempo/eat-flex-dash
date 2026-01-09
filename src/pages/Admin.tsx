@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
-import { Plus, Edit, Trash, UserPlus, Truck } from 'lucide-react';
+import { Plus, Edit, Trash, UserPlus, Truck, Upload, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const Admin = () => {
@@ -33,6 +33,8 @@ const Admin = () => {
     image_url: '',
     available: true,
   });
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const [partnerForm, setPartnerForm] = useState({
     email: '',
@@ -78,6 +80,52 @@ const Admin = () => {
     setDeliveryPartners(data || []);
   };
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({ variant: "destructive", title: "Invalid file", description: "Please select an image file" });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ variant: "destructive", title: "File too large", description: "Image must be less than 5MB" });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('menu-images')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('menu-images')
+        .getPublicUrl(fileName);
+
+      setFormData({ ...formData, image_url: publicUrl });
+      setImagePreview(publicUrl);
+      toast({ title: "Image uploaded successfully" });
+    } catch (error: any) {
+      toast({ variant: "destructive", title: "Upload failed", description: error.message });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData({ ...formData, image_url: '' });
+    setImagePreview(null);
+  };
+
   const handleSaveItem = async () => {
     const itemData = {
       name: formData.name,
@@ -114,6 +162,7 @@ const Admin = () => {
     }
 
     setFormData({ name: '', description: '', price: '', category: 'appetizers', image_url: '', available: true });
+    setImagePreview(null);
     fetchMenuItems();
   };
 
@@ -353,21 +402,54 @@ const Admin = () => {
                           </Select>
                         </div>
                         <div>
-                          <Label>Image URL</Label>
-                          <Input
-                            value={formData.image_url}
-                            onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                          />
+                          <Label>Image</Label>
+                          <div className="space-y-2">
+                            {(imagePreview || formData.image_url) ? (
+                              <div className="relative w-32 h-32">
+                                <img
+                                  src={imagePreview || formData.image_url}
+                                  alt="Preview"
+                                  className="w-full h-full object-cover rounded-md"
+                                />
+                                <Button
+                                  type="button"
+                                  size="icon"
+                                  variant="destructive"
+                                  className="absolute -top-2 -right-2 h-6 w-6"
+                                  onClick={handleRemoveImage}
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            ) : (
+                              <label className="flex items-center justify-center w-32 h-32 border-2 border-dashed border-muted-foreground/25 rounded-md cursor-pointer hover:border-primary transition-colors">
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={handleImageUpload}
+                                  className="hidden"
+                                  disabled={uploading}
+                                />
+                                <div className="text-center">
+                                  <Upload className="h-6 w-6 mx-auto text-muted-foreground" />
+                                  <span className="text-xs text-muted-foreground">
+                                    {uploading ? 'Uploading...' : 'Upload'}
+                                  </span>
+                                </div>
+                              </label>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button onClick={handleSaveItem}>
+                        <Button onClick={handleSaveItem} disabled={uploading}>
                           {editingItem ? 'Update' : 'Add'} Item
                         </Button>
                         <Button variant="outline" onClick={() => {
                           setShowAddItem(false);
                           setEditingItem(null);
                           setFormData({ name: '', description: '', price: '', category: 'appetizers', image_url: '', available: true });
+                          setImagePreview(null);
                         }}>
                           Cancel
                         </Button>
@@ -406,6 +488,7 @@ const Admin = () => {
                                   image_url: item.image_url || '',
                                   available: item.available,
                                 });
+                                setImagePreview(item.image_url || null);
                               }}
                             >
                               <Edit className="h-4 w-4" />
