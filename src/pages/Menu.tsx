@@ -22,7 +22,6 @@ interface MenuItem {
 const Menu = () => {
   const [items, setItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<string>('all');
   const { addToCart, itemCount } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -63,12 +62,24 @@ const Menu = () => {
     });
   };
 
-  const categories = ['all', ...new Set(items.map(item => item.category))];
-  const filteredItems = filter === 'all' ? items : items.filter(item => item.category === filter);
-
   const getCategoryLabel = (cat: string) => {
     return cat.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
+
+  // Category order for display
+  const categoryOrder = ['appetizers', 'main_course', 'specials', 'desserts', 'beverages'];
+  
+  // Group items by category
+  const groupedItems = items.reduce((acc, item) => {
+    if (!acc[item.category]) {
+      acc[item.category] = [];
+    }
+    acc[item.category].push(item);
+    return acc;
+  }, {} as Record<string, MenuItem[]>);
+
+  // Get sorted categories based on defined order
+  const sortedCategories = categoryOrder.filter(cat => groupedItems[cat]?.length > 0);
 
   if (loading) {
     return (
@@ -94,12 +105,13 @@ const Menu = () => {
           </Button>
         </div>
 
+        {/* Quick navigation */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
-          {categories.map(cat => (
+          {sortedCategories.map(cat => (
             <Button
               key={cat}
-              variant={filter === cat ? "default" : "outline"}
-              onClick={() => setFilter(cat)}
+              variant="outline"
+              onClick={() => document.getElementById(cat)?.scrollIntoView({ behavior: 'smooth' })}
               className="whitespace-nowrap"
             >
               {getCategoryLabel(cat)}
@@ -107,45 +119,53 @@ const Menu = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredItems.map(item => (
-            <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-video w-full overflow-hidden bg-secondary/20">
-                {item.image_url ? (
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-muted">
-                    <span className="text-4xl">🍽️</span>
+        {/* Menu sections by category */}
+        {sortedCategories.map(category => (
+          <section key={category} id={category} className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <h2 className="text-2xl font-bold">{getCategoryLabel(category)}</h2>
+              <div className="flex-1 h-px bg-border" />
+              <Badge variant="outline">{groupedItems[category].length} items</Badge>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {groupedItems[category].map(item => (
+                <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="aspect-video w-full overflow-hidden bg-secondary/20">
+                    {item.image_url ? (
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-muted">
+                        <span className="text-4xl">🍽️</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle>{item.name}</CardTitle>
-                  <Badge variant="secondary">{getCategoryLabel(item.category)}</Badge>
-                </div>
-                <CardDescription>{item.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
-              </CardContent>
-              <CardFooter>
-                <Button onClick={() => handleAddToCart(item)} className="w-full">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add to Cart
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+                  <CardHeader>
+                    <CardTitle>{item.name}</CardTitle>
+                    <CardDescription>{item.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Button onClick={() => handleAddToCart(item)} className="w-full">
+                      <Plus className="mr-2 h-4 w-4" />
+                      Add to Cart
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </section>
+        ))}
 
-        {filteredItems.length === 0 && (
+        {items.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-lg text-muted-foreground">No items found in this category.</p>
+            <p className="text-lg text-muted-foreground">No menu items available.</p>
           </div>
         )}
       </main>
