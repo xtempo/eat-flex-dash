@@ -131,7 +131,7 @@ const Admin = () => {
       name: formData.name,
       description: formData.description,
       price: parseFloat(formData.price),
-      category: formData.category as 'appetizers' | 'main_course' | 'desserts' | 'beverages' | 'specials',
+      category: formData.category as any,
       image_url: formData.image_url || null,
       available: formData.available,
     };
@@ -395,7 +395,20 @@ const Admin = () => {
                             <SelectContent>
                               <SelectItem value="appetizers">Appetizers</SelectItem>
                               <SelectItem value="main_course">Main Course</SelectItem>
+                              <SelectItem value="indian">Indian</SelectItem>
+                              <SelectItem value="continental">Continental</SelectItem>
+                              <SelectItem value="chinese">Chinese</SelectItem>
+                              <SelectItem value="italian">Italian</SelectItem>
+                              <SelectItem value="thai">Thai</SelectItem>
+                              <SelectItem value="mexican">Mexican</SelectItem>
+                              <SelectItem value="snacks">Snacks</SelectItem>
+                              <SelectItem value="soups">Soups</SelectItem>
+                              <SelectItem value="salads">Salads</SelectItem>
+                              <SelectItem value="breads">Breads</SelectItem>
+                              <SelectItem value="rice_dishes">Rice Dishes</SelectItem>
+                              <SelectItem value="noodles">Noodles</SelectItem>
                               <SelectItem value="desserts">Desserts</SelectItem>
+                              <SelectItem value="drinks">Drinks</SelectItem>
                               <SelectItem value="beverages">Beverages</SelectItem>
                               <SelectItem value="specials">Specials</SelectItem>
                             </SelectContent>

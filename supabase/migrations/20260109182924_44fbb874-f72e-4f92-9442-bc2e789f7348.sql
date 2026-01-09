@@ -1,0 +1,14 @@
+-- Add new category values to the menu_category enum
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'indian';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'continental';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'chinese';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'italian';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'thai';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'mexican';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'drinks';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'snacks';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'soups';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'salads';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'breads';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'rice_dishes';
+ALTER TYPE menu_category ADD VALUE IF NOT EXISTS 'noodles';

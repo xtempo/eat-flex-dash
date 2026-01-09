@@ -311,6 +311,19 @@ export type Database = {
         | "desserts"
         | "beverages"
         | "specials"
+        | "indian"
+        | "continental"
+        | "chinese"
+        | "italian"
+        | "thai"
+        | "mexican"
+        | "drinks"
+        | "snacks"
+        | "soups"
+        | "salads"
+        | "breads"
+        | "rice_dishes"
+        | "noodles"
       order_status:
         | "pending"
         | "confirmed"
@@ -452,6 +465,19 @@ export const Constants = {
         "desserts",
         "beverages",
         "specials",
+        "indian",
+        "continental",
+        "chinese",
+        "italian",
+        "thai",
+        "mexican",
+        "drinks",
+        "snacks",
+        "soups",
+        "salads",
+        "breads",
+        "rice_dishes",
+        "noodles",
       ],
       order_status: [
         "pending",

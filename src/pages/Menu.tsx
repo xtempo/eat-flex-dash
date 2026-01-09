@@ -67,7 +67,7 @@ const Menu = () => {
   };
 
   // Category order for display
-  const categoryOrder = ['appetizers', 'main_course', 'specials', 'desserts', 'beverages'];
+  const categoryOrder = ['appetizers', 'indian', 'continental', 'chinese', 'italian', 'thai', 'mexican', 'main_course', 'snacks', 'soups', 'salads', 'breads', 'rice_dishes', 'noodles', 'desserts', 'drinks', 'beverages', 'specials'];
   
   // Group items by category
   const groupedItems = items.reduce((acc, item) => {
