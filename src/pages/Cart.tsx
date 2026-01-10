@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
+import LocationPicker from '@/components/LocationPicker';
 
 const Cart = () => {
   const { items, updateQuantity, removeFromCart, clearCart, total } = useCart();
@@ -19,6 +20,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryCoords, setDeliveryCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
 
@@ -33,11 +35,11 @@ const Cart = () => {
       return;
     }
 
-    if (!deliveryAddress || !phone) {
+    if (!deliveryAddress || !phone || !deliveryCoords) {
       toast({
         variant: "destructive",
         title: "Missing information",
-        description: "Please provide delivery address and phone number.",
+        description: "Please select a delivery location on the map and provide phone number.",
       });
       return;
     }
@@ -52,6 +54,8 @@ const Cart = () => {
           user_id: user.id,
           total,
           delivery_address: deliveryAddress,
+          delivery_lat: deliveryCoords.lat,
+          delivery_lng: deliveryCoords.lng,
           phone,
           notes: notes || null,
           payment_status: 'pending',
@@ -178,13 +182,15 @@ const Cart = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="address">Delivery Address *</Label>
-                  <Textarea
-                    id="address"
-                    value={deliveryAddress}
-                    onChange={(e) => setDeliveryAddress(e.target.value)}
-                    placeholder="Enter your delivery address"
-                    required
+                  <Label>Delivery Location *</Label>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Click on the map or search for your delivery address
+                  </p>
+                  <LocationPicker
+                    onLocationSelect={(location) => {
+                      setDeliveryAddress(location.address);
+                      setDeliveryCoords({ lat: location.lat, lng: location.lng });
+                    }}
                   />
                 </div>
                 <div>

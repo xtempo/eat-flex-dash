@@ -7,15 +7,18 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
-import { Package, Clock, Truck, CheckCircle, XCircle, Star } from 'lucide-react';
+import { Package, Clock, Truck, CheckCircle, XCircle, Star, MapPin } from 'lucide-react';
 import { ReviewDialog } from '@/components/ReviewDialog';
 import { DeliveryTracking } from '@/components/DeliveryTracking';
+import LiveTrackingMap from '@/components/LiveTrackingMap';
 
 interface Order {
   id: string;
   total: number;
   status: string;
   delivery_address: string;
+  delivery_lat: number | null;
+  delivery_lng: number | null;
   phone: string;
   notes: string | null;
   created_at: string;
@@ -41,6 +44,7 @@ const Orders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [reviewOrderId, setReviewOrderId] = useState<string | null>(null);
+  const [showMapOrderId, setShowMapOrderId] = useState<string | null>(null);
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -169,6 +173,28 @@ const Orders = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Live Map Tracking */}
+                    {order.delivery_lat && order.delivery_lng && ['confirmed', 'preparing', 'out_for_delivery'].includes(order.status) && (
+                      <div className="space-y-3">
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowMapOrderId(showMapOrderId === order.id ? null : order.id)}
+                          className="w-full"
+                        >
+                          <MapPin className="mr-2 h-4 w-4" />
+                          {showMapOrderId === order.id ? 'Hide Tracking Map' : 'Show Tracking Map'}
+                        </Button>
+                        
+                        {showMapOrderId === order.id && (
+                          <LiveTrackingMap
+                            orderId={order.id}
+                            deliveryPartnerId={order.delivery_partner_id}
+                            customerLocation={{ lat: order.delivery_lat, lng: order.delivery_lng }}
+                          />
+                        )}
+                      </div>
+                    )}
 
                     {order.delivery_partner_id && (
                       <DeliveryTracking
