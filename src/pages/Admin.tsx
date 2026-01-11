@@ -12,8 +12,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
-import { Plus, Edit, Trash, UserPlus, Truck, Upload, X } from 'lucide-react';
+import { Plus, Edit, Trash, UserPlus, Truck, Upload, X, Settings } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import RestaurantLocationSettings from '@/components/RestaurantLocationSettings';
 
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
@@ -270,6 +271,10 @@ const Admin = () => {
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="menu">Menu Items</TabsTrigger>
             <TabsTrigger value="delivery">Delivery Partners</TabsTrigger>
+            <TabsTrigger value="settings">
+              <Settings className="h-4 w-4 mr-1" />
+              Settings
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="orders" className="space-y-4">
@@ -561,6 +566,10 @@ const Admin = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-4">
+            <RestaurantLocationSettings />
           </TabsContent>
         </Tabs>
 
