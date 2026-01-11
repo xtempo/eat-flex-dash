@@ -44,7 +44,6 @@ interface LiveTrackingMapProps {
   orderId: string;
   deliveryPartnerId?: string | null;
   customerLocation: { lat: number; lng: number };
-  restaurantLocation?: { lat: number; lng: number };
 }
 
 interface FitBoundsProps {
@@ -63,9 +62,26 @@ const LiveTrackingMap = ({
   orderId,
   deliveryPartnerId,
   customerLocation,
-  restaurantLocation = { lat: 27.7172, lng: 85.324 } // Default restaurant location
 }: LiveTrackingMapProps) => {
   const [deliveryLocation, setDeliveryLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [restaurantLocation, setRestaurantLocation] = useState<{ lat: number; lng: number }>({ lat: 27.7172, lng: 85.324 });
+
+  // Fetch restaurant location from settings
+  useEffect(() => {
+    const fetchRestaurantLocation = async () => {
+      const { data } = await supabase
+        .from('restaurant_settings')
+        .select('value')
+        .eq('key', 'restaurant_location')
+        .single();
+
+      if (data?.value) {
+        const loc = data.value as unknown as { lat: number; lng: number };
+        setRestaurantLocation({ lat: loc.lat, lng: loc.lng });
+      }
+    };
+    fetchRestaurantLocation();
+  }, []);
 
   useEffect(() => {
     if (!deliveryPartnerId) return;
