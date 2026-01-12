@@ -11,6 +11,7 @@ import { Package, Clock, Truck, CheckCircle, XCircle, Star, MapPin } from 'lucid
 import { ReviewDialog } from '@/components/ReviewDialog';
 import { DeliveryTracking } from '@/components/DeliveryTracking';
 import LiveTrackingMap from '@/components/LiveTrackingMap';
+import OrderStatusTracker from '@/components/OrderStatusTracker';
 
 interface Order {
   id: string;
@@ -129,6 +130,9 @@ const Orders = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-6 space-y-6">
+                    {/* Order Status Tracker */}
+                    <OrderStatusTracker currentStatus={order.status} />
+
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h3 className="font-semibold mb-3">Items</h3>
