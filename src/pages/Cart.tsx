@@ -6,12 +6,13 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, MapPin } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import LocationPicker from '@/components/LocationPicker';
+import DeliveryRoutePreview from '@/components/DeliveryRoutePreview';
 
 const Cart = () => {
   const { items, updateQuantity, removeFromCart, clearCart, total } = useCart();
@@ -182,7 +183,10 @@ const Cart = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label>Delivery Location *</Label>
+                  <Label className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    Delivery Location *
+                  </Label>
                   <p className="text-sm text-muted-foreground mb-2">
                     Click on the map or search for your delivery address
                   </p>
@@ -192,6 +196,20 @@ const Cart = () => {
                       setDeliveryCoords({ lat: location.lat, lng: location.lng });
                     }}
                   />
+                  
+                  {/* Route Preview Map */}
+                  {deliveryCoords && (
+                    <div className="mt-4">
+                      <Label className="text-sm font-medium flex items-center gap-2 mb-2">
+                        <MapPin className="h-4 w-4 text-primary" />
+                        Delivery Route Preview
+                      </Label>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Route from restaurant to your location
+                      </p>
+                      <DeliveryRoutePreview customerLocation={deliveryCoords} />
+                    </div>
+                  )}
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone Number *</Label>
