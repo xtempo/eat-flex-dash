@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCart } from "@/contexts/CartContext";
-import { ShoppingCart, User, LogOut, LayoutDashboard, Package, Mountain } from "lucide-react";
-import { Badge } from "./ui/badge";
+import { User, LogOut, LayoutDashboard, Package, Mountain } from "lucide-react";
+import CartDrawer from "./CartDrawer";
 
 const Header = () => {
   const { user, signOut, isAdmin } = useAuth();
-  const { itemCount } = useCart();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-tibetan-gold/20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -25,6 +23,9 @@ const Header = () => {
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
           <Link to="/menu" className="text-sm font-medium hover:text-primary transition-colors">Menu</Link>
           
+          {/* Cart is now visible to everyone */}
+          <CartDrawer />
+          
           {user ? (
             <>
               <Link to="/orders">
@@ -41,15 +42,6 @@ const Header = () => {
                   </Button>
                 </Link>
               )}
-              <Link to="/cart">
-                <Button variant="ghost" size="sm" className="relative">
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Cart
-                  {itemCount > 0 && (
-                    <Badge className="ml-1 px-1.5 py-0.5 text-xs bg-tibetan-gold text-tibetan-dark">{itemCount}</Badge>
-                  )}
-                </Button>
-              </Link>
               <Button variant="ghost" size="sm" onClick={signOut}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
