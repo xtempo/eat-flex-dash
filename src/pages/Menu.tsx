@@ -4,11 +4,10 @@ import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
-
+import FloatingCart from '@/components/FloatingCart';
 interface MenuItem {
   id: string;
   name: string;
@@ -22,9 +21,8 @@ interface MenuItem {
 const Menu = () => {
   const [items, setItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const { addToCart, itemCount } = useCart();
+  const { addToCart } = useCart();
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMenuItems();
@@ -96,13 +94,6 @@ const Menu = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">Our Menu</h1>
-          <Button onClick={() => navigate('/cart')} className="relative">
-            <ShoppingCart className="mr-2 h-5 w-5" />
-            Cart
-            {itemCount > 0 && (
-              <Badge className="ml-2 px-2 py-1">{itemCount}</Badge>
-            )}
-          </Button>
         </div>
 
         {/* Quick navigation */}
@@ -169,6 +160,9 @@ const Menu = () => {
           </div>
         )}
       </main>
+      
+      {/* Floating Cart Button */}
+      <FloatingCart />
     </div>
   );
 };
