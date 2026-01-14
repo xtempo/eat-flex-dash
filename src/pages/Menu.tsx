@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useCart } from '@/contexts/CartContext';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 import FloatingCart from '@/components/FloatingCart';
+import ExpandableDescription from '@/components/ExpandableDescription';
+
 interface MenuItem {
   id: string;
   name: string;
@@ -135,9 +137,9 @@ const Menu = () => {
                       </div>
                     )}
                   </div>
-                  <CardHeader>
+                  <CardHeader className="pb-2">
                     <CardTitle>{item.name}</CardTitle>
-                    <CardDescription>{item.description}</CardDescription>
+                    <ExpandableDescription description={item.description} maxLength={70} />
                   </CardHeader>
                   <CardContent>
                     <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>

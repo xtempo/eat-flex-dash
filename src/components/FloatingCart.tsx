@@ -5,46 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { ShoppingCart, Plus, Minus, Trash2, ShoppingBag, ChevronDown, ChevronUp } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-
-interface ExpandableDescriptionProps {
-  description: string;
-  maxLength?: number;
-}
-
-const ExpandableDescription = ({ description, maxLength = 50 }: ExpandableDescriptionProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  
-  if (!description) return null;
-  
-  const shouldTruncate = description.length > maxLength;
-  const displayText = isExpanded || !shouldTruncate 
-    ? description 
-    : `${description.slice(0, maxLength)}...`;
-
-  return (
-    <div className="mt-1">
-      <p className="text-xs text-muted-foreground leading-relaxed">
-        {displayText}
-      </p>
-      {shouldTruncate && (
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-xs text-primary hover:underline flex items-center gap-0.5 mt-0.5 font-medium"
-        >
-          {isExpanded ? (
-            <>Show less <ChevronUp className="h-3 w-3" /></>
-          ) : (
-            <>Show more <ChevronDown className="h-3 w-3" /></>
-          )}
-        </button>
-      )}
-    </div>
-  );
-};
+import ExpandableDescription from '@/components/ExpandableDescription';
 
 const FloatingCart = () => {
   const { items, itemCount, total, updateQuantity, removeFromCart } = useCart();
@@ -112,7 +77,7 @@ const FloatingCart = () => {
                       <p className="text-sm text-primary font-semibold">${item.price.toFixed(2)}</p>
                       
                       {item.description && (
-                        <ExpandableDescription description={item.description} />
+                        <ExpandableDescription description={item.description} maxLength={50} className="mt-1 [&>p]:text-xs" />
                       )}
                       
                       <div className="flex items-center gap-2 mt-2">
