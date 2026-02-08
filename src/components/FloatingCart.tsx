@@ -120,24 +120,11 @@ const FloatingCart = () => {
                 <span className="text-lg font-semibold">${total.toFixed(2)}</span>
               </div>
               
-              {user ? (
-                <Link to="/cart" className="block" onClick={() => setIsOpen(false)}>
-                  <Button className="w-full bg-gradient-warm hover:opacity-90" size="lg">
-                    Proceed to Checkout
-                  </Button>
-                </Link>
-              ) : (
-                <div className="space-y-2">
-                  <Link to="/auth" className="block" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full bg-gradient-warm hover:opacity-90" size="lg">
-                      Sign In to Checkout
-                    </Button>
-                  </Link>
-                  <p className="text-xs text-center text-muted-foreground">
-                    You need to sign in to place an order
-                  </p>
-                </div>
-              )}
+              <Link to="/cart" className="block" onClick={() => setIsOpen(false)}>
+                <Button className="w-full bg-gradient-warm hover:opacity-90" size="lg">
+                  View Cart & Checkout
+                </Button>
+              </Link>
             </div>
           </>
         )}
