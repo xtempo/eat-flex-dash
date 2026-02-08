@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Minus, Plus, Trash2, ShoppingBag, MapPin, Phone, FileText, CreditCard, Loader2, ShieldCheck } from 'lucide-react';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Minus, Plus, Trash2, ShoppingBag, MapPin, Phone, FileText, CreditCard, Loader2, ShieldCheck, Banknote, Wallet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,6 +28,7 @@ const Cart = () => {
   const [deliveryCoords, setDeliveryCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'online' | 'cod'>('online');
 
   const deliveryFee = 2.99;
   const tax = total * 0.08; // 8% tax
@@ -66,7 +68,8 @@ const Cart = () => {
           delivery_lng: deliveryCoords.lng,
           phone,
           notes: notes || null,
-          payment_status: 'pending',
+          payment_status: paymentMethod === 'cod' ? 'cash_on_delivery' : 'pending',
+          payment_method: paymentMethod,
         })
         .select()
         .single();
@@ -88,22 +91,31 @@ const Cart = () => {
 
       if (itemsError) throw itemsError;
 
-      // Create Stripe payment session
-      const { data: paymentData, error: paymentError } = await supabase.functions.invoke(
-        'create-payment',
-        {
-          body: {
-            orderId: order.id,
-            amount: grandTotal,
-          },
-        }
-      );
+      if (paymentMethod === 'online') {
+        // Create Stripe payment session
+        const { data: paymentData, error: paymentError } = await supabase.functions.invoke(
+          'create-payment',
+          {
+            body: {
+              orderId: order.id,
+              amount: grandTotal,
+            },
+          }
+        );
 
-      if (paymentError) throw paymentError;
+        if (paymentError) throw paymentError;
 
-      // Clear cart and redirect to Stripe Checkout
-      clearCart();
-      window.location.href = paymentData.url;
+        clearCart();
+        window.location.href = paymentData.url;
+      } else {
+        // Cash on Delivery - just confirm the order
+        clearCart();
+        toast({
+          title: "Order placed successfully!",
+          description: "Your order has been confirmed. Pay with cash upon delivery.",
+        });
+        navigate('/orders');
+      }
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -294,6 +306,56 @@ const Cart = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Payment Method */}
+            <Card>
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Wallet className="h-5 w-5 text-primary" />
+                  Payment Method
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <RadioGroup
+                  value={paymentMethod}
+                  onValueChange={(val) => setPaymentMethod(val as 'online' | 'cod')}
+                  className="space-y-3"
+                >
+                  <label
+                    htmlFor="online"
+                    className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      paymentMethod === 'online'
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/40'
+                    }`}
+                  >
+                    <RadioGroupItem value="online" id="online" />
+                    <CreditCard className="h-5 w-5 text-primary" />
+                    <div className="flex-1">
+                      <p className="font-medium">Pay Online</p>
+                      <p className="text-xs text-muted-foreground">Secure payment via Stripe (Credit/Debit Card)</p>
+                    </div>
+                    <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+                  </label>
+
+                  <label
+                    htmlFor="cod"
+                    className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                      paymentMethod === 'cod'
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/40'
+                    }`}
+                  >
+                    <RadioGroupItem value="cod" id="cod" />
+                    <Banknote className="h-5 w-5 text-primary" />
+                    <div className="flex-1">
+                      <p className="font-medium">Cash on Delivery</p>
+                      <p className="text-xs text-muted-foreground">Pay with cash when your order arrives</p>
+                    </div>
+                  </label>
+                </RadioGroup>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Order Summary */}
@@ -347,16 +409,21 @@ const Cart = () => {
                       <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                       Processing...
                     </>
-                  ) : (
+                  ) : paymentMethod === 'online' ? (
                     <>
                       <CreditCard className="mr-2 h-5 w-5" />
                       Pay ${grandTotal.toFixed(2)}
+                    </>
+                  ) : (
+                    <>
+                      <Banknote className="mr-2 h-5 w-5" />
+                      Place Order (COD) - ${grandTotal.toFixed(2)}
                     </>
                   )}
                 </Button>
                 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
                   <ShieldCheck className="h-4 w-4" />
-                  <span>Secure payment powered by Stripe</span>
+                  <span>{paymentMethod === 'online' ? 'Secure payment powered by Stripe' : 'Pay cash on delivery'}</span>
                 </div>
               </CardFooter>
             </Card>
