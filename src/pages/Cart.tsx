@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Minus, Plus, Trash2, ShoppingBag, MapPin, Phone, FileText, CreditCard, Loader2, ShieldCheck, Banknote, Wallet } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
@@ -22,6 +23,7 @@ const Cart = () => {
   const { items, updateQuantity, removeFromCart, clearCart, total } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { formatPrice } = useCurrency();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -192,7 +194,7 @@ const Cart = () => {
                             )}
                           </div>
                           <p className="text-lg font-bold text-primary whitespace-nowrap">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            {formatPrice(item.price * item.quantity)}
                           </p>
                         </div>
                         <div className="flex items-center gap-3 mt-3">
@@ -216,7 +218,7 @@ const Cart = () => {
                             </Button>
                           </div>
                           <span className="text-sm text-muted-foreground">
-                            ${item.price.toFixed(2)} each
+                            {formatPrice(item.price)} each
                           </span>
                           <Button
                             size="icon"
@@ -371,15 +373,15 @@ const Cart = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal ({items.reduce((sum, i) => sum + i.quantity, 0)} items)</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>{formatPrice(total)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Delivery Fee</span>
-                    <span>${deliveryFee.toFixed(2)}</span>
+                    <span>{formatPrice(deliveryFee)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Tax (8%)</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>{formatPrice(tax)}</span>
                   </div>
                 </div>
                 
@@ -387,7 +389,7 @@ const Cart = () => {
                 
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">Total</span>
-                  <span className="text-2xl font-bold text-primary">${grandTotal.toFixed(2)}</span>
+                  <span className="text-2xl font-bold text-primary">{formatPrice(grandTotal)}</span>
                 </div>
 
                 {!user && (
@@ -412,12 +414,12 @@ const Cart = () => {
                   ) : paymentMethod === 'online' ? (
                     <>
                       <CreditCard className="mr-2 h-5 w-5" />
-                      Pay ${grandTotal.toFixed(2)}
+                      Pay {formatPrice(grandTotal)}
                     </>
                   ) : (
                     <>
                       <Banknote className="mr-2 h-5 w-5" />
-                      Place Order (COD) - ${grandTotal.toFixed(2)}
+                      Place Order (COD) - {formatPrice(grandTotal)}
                     </>
                   )}
                 </Button>

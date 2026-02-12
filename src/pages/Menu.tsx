@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Badge } from '@/components/ui/badge';
 import { Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import Header from '@/components/Header';
 import FloatingCart from '@/components/FloatingCart';
 import ExpandableDescription from '@/components/ExpandableDescription';
@@ -25,6 +26,7 @@ const Menu = () => {
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     fetchMenuItems();
@@ -142,7 +144,7 @@ const Menu = () => {
                     <ExpandableDescription description={item.description} maxLength={70} />
                   </CardHeader>
                   <CardContent>
-                    <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
+                    <p className="text-2xl font-bold text-primary">{formatPrice(item.price)}</p>
                   </CardContent>
                   <CardFooter>
                     <Button onClick={() => handleAddToCart(item)} className="w-full">
