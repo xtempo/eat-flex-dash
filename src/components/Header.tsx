@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { User, LogOut, LayoutDashboard, Package, Mountain } from "lucide-react";
 import CartDrawer from "./CartDrawer";
+import CurrencySelector from "./CurrencySelector";
 
 const Header = () => {
   const { user, signOut, isAdmin } = useAuth();
@@ -22,6 +23,8 @@ const Header = () => {
         <nav className="flex items-center gap-4">
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">Home</Link>
           <Link to="/menu" className="text-sm font-medium hover:text-primary transition-colors">Menu</Link>
+          
+          <CurrencySelector />
           
           {/* Cart is now visible to everyone */}
           <CartDrawer />
