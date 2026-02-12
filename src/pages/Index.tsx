@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import MenuPreview from "@/components/MenuPreview";
+import FeatureCards from "@/components/FeatureCards";
 import Cookies from "@/components/Cookies";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
@@ -17,6 +18,7 @@ const Index = () => {
     <div className="min-h-screen">
       <Header />
       <Hero />
+      <FeatureCards />
       
       <section className="py-12 bg-gradient-to-br from-primary/10 via-secondary/20 to-accent/10">
         <div className="container mx-auto px-4 text-center">
