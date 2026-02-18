@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Cookie, Heart, Star } from "lucide-react";
+import ExpandableDescription from "./ExpandableDescription";
 import { useCurrency } from "@/contexts/CurrencyContext";
 
 const Cookies = () => {
@@ -67,9 +68,11 @@ const Cookies = () => {
                 </div>
                 
                 <h3 className="text-xl font-semibold mb-2">{cookie.name}</h3>
-                <p className="text-sm text-muted-foreground mb-4 min-h-[40px]">
-                  {cookie.description}
-                </p>
+                <ExpandableDescription 
+                  description={cookie.description} 
+                  maxLength={50} 
+                  className="text-sm text-muted-foreground mb-4"
+                />
                 
                 <div className="flex items-center justify-between">
                   <span className="text-2xl font-bold text-primary">{formatPrice(cookie.priceUSD)}</span>
