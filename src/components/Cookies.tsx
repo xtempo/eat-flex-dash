@@ -54,7 +54,7 @@ const Cookies = () => {
               key={index} 
               className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
             >
-              <CardContent className="p-6">
+              <CardContent className="p-6 flex flex-col h-full">
                 <div className="flex items-start justify-between mb-3">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <Cookie className="h-6 w-6 text-primary" />
@@ -74,9 +74,13 @@ const Cookies = () => {
                   className="text-sm text-muted-foreground mb-4"
                 />
                 
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-primary">{formatPrice(cookie.priceUSD)}</span>
-                  <Button size="sm" variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground">
+                <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/50">
+                  <span className="text-lg font-bold text-primary">{formatPrice(cookie.priceUSD)}</span>
+                  <Button 
+                    size="icon" 
+                    variant="ghost" 
+                    className="h-9 w-9 rounded-full hover:bg-primary/10 hover:text-primary transition-colors"
+                  >
                     <Heart className="h-4 w-4" />
                   </Button>
                 </div>
