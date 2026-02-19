@@ -67,7 +67,7 @@ const Admin = () => {
       .select(`
         *,
         profiles (full_name),
-        order_items (item_name, quantity, price)
+        order_items (item_name, quantity, price, menu_item_id, menu_items (image_url))
       `)
       .order('created_at', { ascending: false });
     setOrders(data || []);
@@ -330,13 +330,29 @@ const Admin = () => {
                           <p><strong>Address:</strong> {order.delivery_address}</p>
                           <p><strong>Phone:</strong> {order.phone}</p>
                           {order.notes && <p><strong>Notes:</strong> {order.notes}</p>}
-                          <div className="mt-2">
+                          <div className="mt-3">
                             <strong>Items:</strong>
-                            {order.order_items.map((item: any, idx: number) => (
-                              <div key={idx} className="ml-4">
-                                {item.quantity}x {item.item_name} - ${(item.price * item.quantity).toFixed(2)}
-                              </div>
-                            ))}
+                            <div className="mt-2 space-y-2">
+                              {order.order_items.map((item: any, idx: number) => (
+                                <div key={idx} className="flex items-center gap-3 p-2 rounded-lg bg-muted/40">
+                                  {item.menu_items?.image_url ? (
+                                    <img
+                                      src={item.menu_items.image_url}
+                                      alt={item.item_name}
+                                      className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border"
+                                    />
+                                  ) : (
+                                    <div className="w-12 h-12 rounded-md bg-muted flex items-center justify-center flex-shrink-0 border border-border">
+                                      <span className="text-xs text-muted-foreground">No img</span>
+                                    </div>
+                                  )}
+                                  <div className="flex-1 min-w-0">
+                                    <p className="font-medium truncate">{item.item_name}</p>
+                                    <p className="text-muted-foreground text-xs">Qty: {item.quantity} · ${(item.price * item.quantity).toFixed(2)}</p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </CardContent>
