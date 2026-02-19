@@ -339,10 +339,10 @@ const Admin = () => {
                                     <img
                                       src={item.menu_items.image_url}
                                       alt={item.item_name}
-                                      className="w-12 h-12 rounded-md object-cover flex-shrink-0 border border-border"
+                                      className="w-16 h-16 rounded-md object-cover flex-shrink-0 border border-border"
                                     />
                                   ) : (
-                                    <div className="w-12 h-12 rounded-md bg-muted flex items-center justify-center flex-shrink-0 border border-border">
+                                    <div className="w-16 h-16 rounded-md bg-muted flex items-center justify-center flex-shrink-0 border border-border">
                                       <span className="text-xs text-muted-foreground">No img</span>
                                     </div>
                                   )}
