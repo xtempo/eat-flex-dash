@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
@@ -25,7 +25,8 @@ const Admin = () => {
   const [showAddItem, setShowAddItem] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [showPartnerForm, setShowPartnerForm] = useState(false);
-  
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -326,7 +327,7 @@ const Admin = () => {
                             </Select>
                           </div>
                         </div>
-                        <div className="text-sm">
+                        <div className="text-base">
                           <p><strong>Address:</strong> {order.delivery_address}</p>
                           <p><strong>Phone:</strong> {order.phone}</p>
                           {order.notes && <p><strong>Notes:</strong> {order.notes}</p>}
@@ -339,16 +340,17 @@ const Admin = () => {
                                     <img
                                       src={item.menu_items.image_url}
                                       alt={item.item_name}
-                                      className="w-16 h-16 rounded-md object-cover flex-shrink-0 border border-border"
+                                      className="w-20 h-20 rounded-md object-cover flex-shrink-0 border border-border cursor-pointer hover:opacity-80 transition-opacity"
+                                      onClick={() => setZoomedImage(item.menu_items.image_url)}
                                     />
                                   ) : (
-                                    <div className="w-16 h-16 rounded-md bg-muted flex items-center justify-center flex-shrink-0 border border-border">
-                                      <span className="text-xs text-muted-foreground">No img</span>
+                                    <div className="w-20 h-20 rounded-md bg-muted flex items-center justify-center flex-shrink-0 border border-border">
+                                      <span className="text-sm text-muted-foreground">No img</span>
                                     </div>
                                   )}
                                   <div className="flex-1 min-w-0">
-                                    <p className="font-medium truncate">{item.item_name}</p>
-                                    <p className="text-muted-foreground text-xs">Qty: {item.quantity} · ${(item.price * item.quantity).toFixed(2)}</p>
+                                    <p className="font-medium text-base truncate">{item.item_name}</p>
+                                    <p className="text-muted-foreground text-sm">Qty: {item.quantity} · ${(item.price * item.quantity).toFixed(2)}</p>
                                   </div>
                                 </div>
                               ))}
@@ -630,6 +632,19 @@ const Admin = () => {
               <Button variant="outline" onClick={() => setShowPartnerForm(false)}>Cancel</Button>
               <Button onClick={handleAddDeliveryPartner}>Add Partner</Button>
             </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Image Zoom Dialog */}
+        <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
+          <DialogContent className="max-w-2xl p-2">
+            {zoomedImage && (
+              <img
+                src={zoomedImage}
+                alt="Order item"
+                className="w-full h-auto rounded-lg object-contain max-h-[80vh]"
+              />
+            )}
           </DialogContent>
         </Dialog>
       </main>
