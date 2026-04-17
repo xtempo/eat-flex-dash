@@ -65,6 +65,37 @@ const LiveTrackingMap = ({
 }: LiveTrackingMapProps) => {
   const [deliveryLocation, setDeliveryLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [restaurantLocation, setRestaurantLocation] = useState<{ lat: number; lng: number }>({ lat: 27.7172, lng: 85.324 });
+  const [liveCustomerLocation, setLiveCustomerLocation] = useState(customerLocation);
+
+  // Keep prop changes in sync
+  useEffect(() => {
+    setLiveCustomerLocation(customerLocation);
+  }, [customerLocation.lat, customerLocation.lng]);
+
+  // Subscribe to real-time customer location updates on the order
+  useEffect(() => {
+    const channel = supabase
+      .channel(`order-customer-location-${orderId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'orders',
+          filter: `id=eq.${orderId}`,
+        },
+        (payload) => {
+          const { delivery_lat, delivery_lng } = payload.new as any;
+          if (delivery_lat && delivery_lng) {
+            setLiveCustomerLocation({ lat: delivery_lat, lng: delivery_lng });
+          }
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [orderId]);
 
   // Fetch restaurant location from settings
   useEffect(() => {
