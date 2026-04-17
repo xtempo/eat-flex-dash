@@ -15,6 +15,8 @@ interface AssignedOrder {
   total: number;
   status: string;
   delivery_address: string;
+  delivery_lat: number | null;
+  delivery_lng: number | null;
   phone: string;
   created_at: string;
 }
