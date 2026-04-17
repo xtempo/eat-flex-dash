@@ -12,6 +12,7 @@ import { ReviewDialog } from '@/components/ReviewDialog';
 import { DeliveryTracking } from '@/components/DeliveryTracking';
 import LiveTrackingMap from '@/components/LiveTrackingMap';
 import OrderStatusTracker from '@/components/OrderStatusTracker';
+import { LiveLocationShare } from '@/components/LiveLocationShare';
 
 interface Order {
   id: string;
