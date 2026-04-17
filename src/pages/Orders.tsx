@@ -179,6 +179,15 @@ const Orders = () => {
                       </div>
                     </div>
 
+                    {/* Customer can share/update live location while order is active */}
+                    {['pending', 'confirmed', 'preparing', 'out_for_delivery'].includes(order.status) && (
+                      <LiveLocationShare
+                        orderId={order.id}
+                        initialLat={order.delivery_lat}
+                        initialLng={order.delivery_lng}
+                      />
+                    )}
+
                     {/* Live Map Tracking */}
                     {order.delivery_lat && order.delivery_lng && ['confirmed', 'preparing', 'out_for_delivery'].includes(order.status) && (
                       <div className="space-y-3">
