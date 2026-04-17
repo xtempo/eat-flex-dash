@@ -8,12 +8,15 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Package, MapPin, Navigation } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import LiveTrackingMap from '@/components/LiveTrackingMap';
 
 interface AssignedOrder {
   id: string;
   total: number;
   status: string;
   delivery_address: string;
+  delivery_lat: number | null;
+  delivery_lng: number | null;
   phone: string;
   created_at: string;
 }
@@ -212,6 +215,36 @@ const DeliveryDashboard = () => {
                     <p className="text-sm text-muted-foreground">Order Total</p>
                     <p className="text-xl font-bold text-primary">${order.total.toFixed(2)}</p>
                   </div>
+
+                  {order.delivery_lat && order.delivery_lng && (
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <Button
+                          asChild
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                        >
+                          <a
+                            href={`https://www.google.com/maps/dir/?api=1&destination=${order.delivery_lat},${order.delivery_lng}&travelmode=driving`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Navigation className="mr-2 h-4 w-4" />
+                            Navigate to Customer
+                          </a>
+                        </Button>
+                      </div>
+                      <LiveTrackingMap
+                        orderId={order.id}
+                        deliveryPartnerId={user!.id}
+                        customerLocation={{ lat: order.delivery_lat, lng: order.delivery_lng }}
+                      />
+                      <p className="text-xs text-muted-foreground text-center">
+                        Customer's pin updates in real-time when they share live location.
+                      </p>
+                    </div>
+                  )}
 
                   <div className="flex gap-2">
                     {order.status === 'confirmed' && (

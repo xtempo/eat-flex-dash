@@ -12,6 +12,7 @@ import { ReviewDialog } from '@/components/ReviewDialog';
 import { DeliveryTracking } from '@/components/DeliveryTracking';
 import LiveTrackingMap from '@/components/LiveTrackingMap';
 import OrderStatusTracker from '@/components/OrderStatusTracker';
+import { LiveLocationShare } from '@/components/LiveLocationShare';
 
 interface Order {
   id: string;
@@ -177,6 +178,15 @@ const Orders = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Customer can share/update live location while order is active */}
+                    {['pending', 'confirmed', 'preparing', 'out_for_delivery'].includes(order.status) && (
+                      <LiveLocationShare
+                        orderId={order.id}
+                        initialLat={order.delivery_lat}
+                        initialLng={order.delivery_lng}
+                      />
+                    )}
 
                     {/* Live Map Tracking */}
                     {order.delivery_lat && order.delivery_lng && ['confirmed', 'preparing', 'out_for_delivery'].includes(order.status) && (
