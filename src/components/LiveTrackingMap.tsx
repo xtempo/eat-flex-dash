@@ -159,7 +159,7 @@ const LiveTrackingMap = ({
 
   // Calculate bounds to fit all markers
   const allPoints: [number, number][] = [
-    [customerLocation.lat, customerLocation.lng],
+    [liveCustomerLocation.lat, liveCustomerLocation.lng],
     [restaurantLocation.lat, restaurantLocation.lng],
   ];
   
@@ -174,17 +174,17 @@ const LiveTrackingMap = ({
     ? [
         [restaurantLocation.lat, restaurantLocation.lng],
         [deliveryLocation.lat, deliveryLocation.lng],
-        [customerLocation.lat, customerLocation.lng],
+        [liveCustomerLocation.lat, liveCustomerLocation.lng],
       ]
     : [
         [restaurantLocation.lat, restaurantLocation.lng],
-        [customerLocation.lat, customerLocation.lng],
+        [liveCustomerLocation.lat, liveCustomerLocation.lng],
       ];
 
   return (
     <div className="h-80 rounded-lg overflow-hidden border">
       <MapContainer
-        center={[customerLocation.lat, customerLocation.lng]}
+        center={[liveCustomerLocation.lat, liveCustomerLocation.lng]}
         zoom={13}
         style={{ height: '100%', width: '100%' }}
       >
@@ -204,11 +204,11 @@ const LiveTrackingMap = ({
         </Marker>
 
         {/* Customer Location Marker */}
-        <Marker position={[customerLocation.lat, customerLocation.lng]} icon={customerIcon}>
+        <Marker position={[liveCustomerLocation.lat, liveCustomerLocation.lng]} icon={customerIcon}>
           <Popup>
-            <strong>Delivery Location</strong>
+            <strong>Customer Location</strong>
             <br />
-            Your order will be delivered here
+            Live location from customer
           </Popup>
         </Marker>
 
