@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Package, MapPin, Navigation } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import LiveTrackingMap from '@/components/LiveTrackingMap';
 
 interface AssignedOrder {
   id: string;
