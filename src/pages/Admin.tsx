@@ -15,6 +15,7 @@ import Header from '@/components/Header';
 import { Plus, Edit, Trash, UserPlus, Truck, Upload, X, Settings } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import RestaurantLocationSettings from '@/components/RestaurantLocationSettings';
+import LiveTrackingMap from '@/components/LiveTrackingMap';
 
 const Admin = () => {
   const { user, isAdmin, loading } = useAuth();
