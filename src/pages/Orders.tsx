@@ -13,6 +13,7 @@ import { DeliveryTracking } from '@/components/DeliveryTracking';
 import LiveTrackingMap from '@/components/LiveTrackingMap';
 import OrderStatusTracker from '@/components/OrderStatusTracker';
 import { LiveLocationShare } from '@/components/LiveLocationShare';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface Order {
   id: string;
@@ -141,14 +142,14 @@ const Orders = () => {
                           {order.order_items.map((item, idx) => (
                             <div key={idx} className="flex justify-between text-sm">
                               <span>{item.quantity}x {item.item_name}</span>
-                              <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+                              <span className="font-semibold">{formatPrice(item.price * item.quantity)}</span>
                             </div>
                           ))}
                         </div>
                         <div className="mt-4 pt-4 border-t space-y-2">
                           <div className="flex justify-between font-bold">
                             <span>Total</span>
-                            <span className="text-primary">${order.total.toFixed(2)}</span>
+                            <span className="text-primary">{formatPrice(order.total)}</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Payment</span>
