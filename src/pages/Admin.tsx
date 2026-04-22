@@ -355,8 +355,18 @@ const Admin = () => {
                                   </div>
                                 </div>
                               ))}
-                            </div>
                           </div>
+                        </div>
+                        {order.delivery_lat && order.delivery_lng && order.status !== 'delivered' && order.status !== 'cancelled' && (
+                          <div className="mt-4">
+                            <p className="font-semibold mb-2 text-sm">Live Customer Location</p>
+                            <LiveTrackingMap
+                              orderId={order.id}
+                              deliveryPartnerId={order.delivery_partner_id}
+                              customerLocation={{ lat: order.delivery_lat, lng: order.delivery_lng }}
+                            />
+                          </div>
+                        )}
                         </div>
                       </CardContent>
                     </Card>
