@@ -46,6 +46,7 @@ const statusConfig = {
 const Orders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
   const [reviewOrderId, setReviewOrderId] = useState<string | null>(null);
   const [showMapOrderId, setShowMapOrderId] = useState<string | null>(null);
   const { user } = useAuth();
