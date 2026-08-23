@@ -83,7 +83,7 @@ const Contact = () => {
               <div className="h-64 bg-gradient-subtle flex items-center justify-center">
                 <div className="text-center space-y-2">
                   <Mountain className="w-12 h-12 text-primary mx-auto" />
-                  <p className="text-muted-foreground">Himalayan Kitchen Location</p>
+                  <p className="text-muted-foreground">DE CHUTAY RANTAK Location</p>
                   <p className="text-sm text-muted-foreground">123 Mountain View Street</p>
                 </div>
               </div>

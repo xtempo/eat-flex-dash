@@ -41,7 +41,7 @@ const About = () => {
                 Ancient Wisdom, Modern Warmth
               </h2>
               <p className="text-lg text-muted-foreground">
-                Nestled in the heart of the city, Himalayan Kitchen brings the authentic flavors 
+                Nestled in the heart of the city, DE CHUTAY RANTAK brings the authentic flavors 
                 of Tibet and Ladakh to your table. Our recipes have been passed down through 
                 generations of Himalayan families.
               </p>

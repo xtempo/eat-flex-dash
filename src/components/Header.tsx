@@ -16,7 +16,7 @@ const Header = () => {
             <Mountain className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold text-primary tracking-wide">Himalayan Kitchen</span>
+            <span className="text-xl font-bold text-primary tracking-wide">DE CHUTAY RANTAK</span>
             <span className="text-xs text-muted-foreground tracking-widest uppercase">Tibetan & Ladakhi</span>
           </div>
         </Link>
