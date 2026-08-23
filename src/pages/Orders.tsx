@@ -12,8 +12,6 @@ import { ReviewDialog } from '@/components/ReviewDialog';
 import { DeliveryTracking } from '@/components/DeliveryTracking';
 import LiveTrackingMap from '@/components/LiveTrackingMap';
 import OrderStatusTracker from '@/components/OrderStatusTracker';
-import { LiveLocationShare } from '@/components/LiveLocationShare';
-import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface Order {
   id: string;
@@ -46,7 +44,6 @@ const statusConfig = {
 const Orders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const { formatPrice } = useCurrency();
   const [reviewOrderId, setReviewOrderId] = useState<string | null>(null);
   const [showMapOrderId, setShowMapOrderId] = useState<string | null>(null);
   const { user } = useAuth();
@@ -143,14 +140,14 @@ const Orders = () => {
                           {order.order_items.map((item, idx) => (
                             <div key={idx} className="flex justify-between text-sm">
                               <span>{item.quantity}x {item.item_name}</span>
-                              <span className="font-semibold">{formatPrice(item.price * item.quantity)}</span>
+                              <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
                             </div>
                           ))}
                         </div>
                         <div className="mt-4 pt-4 border-t space-y-2">
                           <div className="flex justify-between font-bold">
                             <span>Total</span>
-                            <span className="text-primary">{formatPrice(order.total)}</span>
+                            <span className="text-primary">${order.total.toFixed(2)}</span>
                           </div>
                           <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Payment</span>
@@ -180,15 +177,6 @@ const Orders = () => {
                         </div>
                       </div>
                     </div>
-
-                    {/* Customer can share/update live location while order is active */}
-                    {['pending', 'confirmed', 'preparing', 'out_for_delivery'].includes(order.status) && (
-                      <LiveLocationShare
-                        orderId={order.id}
-                        initialLat={order.delivery_lat}
-                        initialLng={order.delivery_lng}
-                      />
-                    )}
 
                     {/* Live Map Tracking */}
                     {order.delivery_lat && order.delivery_lng && ['confirmed', 'preparing', 'out_for_delivery'].includes(order.status) && (

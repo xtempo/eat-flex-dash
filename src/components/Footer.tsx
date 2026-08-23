@@ -33,7 +33,7 @@ const Footer = () => {
                 <Mountain className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
-                <span className="text-2xl font-bold block">Himalayan Kitchen</span>
+                <span className="text-2xl font-bold block">DE CHUTAY RANTAK</span>
                 <span className="text-xs text-tibetan-gold tracking-widest uppercase">Tibetan & Ladakhi</span>
               </div>
             </div>
@@ -88,7 +88,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-tibetan-gold" />
-                <span className="text-tibetan-cream/80">namaste@himalayankitchen.com</span>
+                <span className="text-tibetan-cream/80">namaste@dechutayrantak.com</span>
               </div>
             </div>
           </div>
@@ -117,7 +117,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-tibetan-cream/60 text-sm">
-            © 2024 Himalayan Kitchen. All rights reserved.
+            © 2024 DE CHUTAY RANTAK. All rights reserved.
           </p>
           <div className="flex items-center space-x-2 text-tibetan-cream/60 text-sm">
             <span>Made with</span>

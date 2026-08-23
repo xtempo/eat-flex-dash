@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCurrency } from '@/contexts/CurrencyContext';
 import { ShoppingCart, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -12,7 +11,6 @@ import { Separator } from '@/components/ui/separator';
 const CartDrawer = () => {
   const { items, itemCount, total, updateQuantity, removeFromCart } = useCart();
   const { user } = useAuth();
-  const { formatPrice } = useCurrency();
 
   return (
     <Sheet>
@@ -68,7 +66,7 @@ const CartDrawer = () => {
                     )}
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium truncate">{item.name}</h4>
-                      <p className="text-sm text-primary font-semibold">{formatPrice(item.price)}</p>
+                      <p className="text-sm text-primary font-semibold">${item.price.toFixed(2)}</p>
                       
                       <div className="flex items-center gap-2 mt-2">
                         <Button
@@ -107,7 +105,7 @@ const CartDrawer = () => {
               <Separator />
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="text-lg font-semibold">{formatPrice(total)}</span>
+                <span className="text-lg font-semibold">${total.toFixed(2)}</span>
               </div>
               
               <Link to="/cart" className="block">

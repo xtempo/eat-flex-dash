@@ -1,1 +1,0 @@
-ALTER TABLE public.orders REPLICA IDENTITY FULL;

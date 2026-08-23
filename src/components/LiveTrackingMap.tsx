@@ -65,37 +65,6 @@ const LiveTrackingMap = ({
 }: LiveTrackingMapProps) => {
   const [deliveryLocation, setDeliveryLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [restaurantLocation, setRestaurantLocation] = useState<{ lat: number; lng: number }>({ lat: 27.7172, lng: 85.324 });
-  const [liveCustomerLocation, setLiveCustomerLocation] = useState(customerLocation);
-
-  // Keep prop changes in sync
-  useEffect(() => {
-    setLiveCustomerLocation(customerLocation);
-  }, [customerLocation.lat, customerLocation.lng]);
-
-  // Subscribe to real-time customer location updates on the order
-  useEffect(() => {
-    const channel = supabase
-      .channel(`order-customer-location-${orderId}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'orders',
-          filter: `id=eq.${orderId}`,
-        },
-        (payload) => {
-          const { delivery_lat, delivery_lng } = payload.new as any;
-          if (delivery_lat && delivery_lng) {
-            setLiveCustomerLocation({ lat: delivery_lat, lng: delivery_lng });
-          }
-        }
-      )
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [orderId]);
 
   // Fetch restaurant location from settings
   useEffect(() => {
@@ -159,7 +128,7 @@ const LiveTrackingMap = ({
 
   // Calculate bounds to fit all markers
   const allPoints: [number, number][] = [
-    [liveCustomerLocation.lat, liveCustomerLocation.lng],
+    [customerLocation.lat, customerLocation.lng],
     [restaurantLocation.lat, restaurantLocation.lng],
   ];
   
@@ -174,17 +143,17 @@ const LiveTrackingMap = ({
     ? [
         [restaurantLocation.lat, restaurantLocation.lng],
         [deliveryLocation.lat, deliveryLocation.lng],
-        [liveCustomerLocation.lat, liveCustomerLocation.lng],
+        [customerLocation.lat, customerLocation.lng],
       ]
     : [
         [restaurantLocation.lat, restaurantLocation.lng],
-        [liveCustomerLocation.lat, liveCustomerLocation.lng],
+        [customerLocation.lat, customerLocation.lng],
       ];
 
   return (
     <div className="h-80 rounded-lg overflow-hidden border">
       <MapContainer
-        center={[liveCustomerLocation.lat, liveCustomerLocation.lng]}
+        center={[customerLocation.lat, customerLocation.lng]}
         zoom={13}
         style={{ height: '100%', width: '100%' }}
       >
@@ -204,11 +173,11 @@ const LiveTrackingMap = ({
         </Marker>
 
         {/* Customer Location Marker */}
-        <Marker position={[liveCustomerLocation.lat, liveCustomerLocation.lng]} icon={customerIcon}>
+        <Marker position={[customerLocation.lat, customerLocation.lng]} icon={customerIcon}>
           <Popup>
-            <strong>Customer Location</strong>
+            <strong>Delivery Location</strong>
             <br />
-            Live location from customer
+            Your order will be delivered here
           </Popup>
         </Marker>
 
